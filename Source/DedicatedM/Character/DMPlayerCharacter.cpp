@@ -40,7 +40,11 @@ void ADMPlayerCharacter::BeginPlay()
 		APlayerController* PC = Cast<APlayerController>(GetController());
 		checkf(IsValid(PC) == true, TEXT("PlayerController is invalid."));
 
-		// SubSystem : 싱글톤같은 객체, 싱글톤은 프로그램 전체에 걸쳐있기 때문에 불필요하게 LifeCycle이 오래 남음
+		// SubSystem : 싱글톤같은 객체
+		// 싱글톤은 프로그램 전체에 걸쳐 프로그램 시작 ~ 끝까지 불필요하게 LifeCycle이 오래 남음
+		// 하지만 SubSystem을 이용하면 특정 객체와 LifceCycle을 같게 할 수 있음
+		// Subsystem은 “불필요하게 오래 사는 싱글톤 문제를 해결하기 위해
+		// 수명을 특정 시스템(Engine / World / GameInstance / Player)에 묶어둔 구조”
 		// LocalPlayerSubSystem : LocalPlayer객체와 LifeCycle이 같음
 		UEnhancedInputLocalPlayerSubsystem* EILPS = ULocalPlayer::GetSubsystem<UEnhancedInputLocalPlayerSubsystem>(PC->GetLocalPlayer());
 		checkf(IsValid(EILPS) == true, TEXT("EnhancedInputLocalPlayerSubsystem is invalid."));
