@@ -10,5 +10,8 @@ UCLASS()
 class DEDICATEDM_API ADMPlayerController : public APlayerController
 {
 	GENERATED_BODY()
+
+public:
+	ADMPlayerController();
 	
 };

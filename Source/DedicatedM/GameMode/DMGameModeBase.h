@@ -10,5 +10,8 @@ UCLASS()
 class DEDICATEDM_API ADMGameModeBase : public AGameModeBase
 {
 	GENERATED_BODY()
+
+public:
+	ADMGameModeBase();
 	
 };

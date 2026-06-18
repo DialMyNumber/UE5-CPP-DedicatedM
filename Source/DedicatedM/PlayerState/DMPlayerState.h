@@ -11,4 +11,6 @@ class DEDICATEDM_API ADMPlayerState : public APlayerState
 {
 	GENERATED_BODY()
 	
+public:
+	ADMPlayerState();
 };

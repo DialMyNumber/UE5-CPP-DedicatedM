@@ -8,8 +8,12 @@
 #include "Camera/CameraComponent.h"
 #include "EnhancedInputComponent.h"
 
+#include "DedicatedM/DedicatedM.h"
+
 ADMPlayerCharacter::ADMPlayerCharacter()
 {
+	DM_LOG_NET(LogDMNet, Log, TEXT("Player Character Test"));
+
 	PrimaryActorTick.bCanEverTick = false;
 
 	bUseControllerRotationPitch = false;

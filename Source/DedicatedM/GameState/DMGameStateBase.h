@@ -11,4 +11,6 @@ class DEDICATEDM_API ADMGameStateBase : public AGameStateBase
 {
 	GENERATED_BODY()
 	
+public:
+	ADMGameStateBase();
 };
