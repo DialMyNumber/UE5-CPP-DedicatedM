@@ -6,7 +6,7 @@
 #include "Engine/DataAsset.h"
 #include "ItemDataAsset.generated.h"
 
-UCLASS()
+UCLASS(BlueprintType, Blueprintable)
 class INVENTORYPLUGIN_API UItemDataAsset : public UDataAsset
 {
 	GENERATED_BODY()
