@@ -42,42 +42,58 @@ void UInventoryComponent::BeginPlay()
 		return;
 	}
 
-	INVEN_NET_LOG(InventoryLog, Warning, Owner, "BeginPlay");
+	INVEN_NET_LOG(InventoryLog, Warning, Owner, "Inventory Component Attached.");
 }
 
-void UInventoryComponent::Server_AddItem_Implementation(FName ItemID, int32 Count)
+void UInventoryComponent::Server_AddItem_Implementation(UItemDataAsset* Item, int32 Count)
 {
 	if (!GetOwner() || !GetOwner()->HasAuthority())
 	{
 		return;
 	}
 
-	UWorld* World = GetWorld();
-	if (!World)
+	if (!Item)
 	{
 		return;
 	}
 
-	// 모든 Pawn 순회
-	for (TActorIterator<APawn> It(GetWorld()); It; ++It)
+	// 1. 이미 같은 아이템 있는지 찾기
+	for (FInventoryEntry& Entry : Items)
 	{
-		APawn* Pawn = *It;
-		if (!Pawn)
+		if (Entry.Item == Item)
+		{
+			Entry.CurrentStack += Count;
+			return;
+		}
+	}
+
+	// 2. 없으면 새로 추가
+	FInventoryEntry NewEntry;
+	NewEntry.Item = Item;
+	NewEntry.CurrentStack = Count;
+
+	Items.Add(NewEntry);
+}
+
+void UInventoryComponent::PrintAllItems()
+{
+	if (!GetOwner() || !GetOwner()->HasAuthority())
+	{
+		return; // 서버만 출력
+	}
+
+	UE_LOG(LogTemp, Warning, TEXT("=== Inventory Dump ==="));
+
+	for (const FInventoryEntry& Entry : Items)
+	{
+		if (!Entry.Item)
 		{
 			continue;
 		}
 
-		UInventoryComponent* Inv = Pawn->FindComponentByClass<UInventoryComponent>();
-		if (!Inv)
-		{
-			continue;
-		}
-
-		// 아이템 추가
-		FInventoryEntry NewEntry;
-		NewEntry.Item = nullptr; // 지금은 테스트라 nullptr 가능
-		NewEntry.CurrentStack = Count;
-
-		Inv->Items.Add(NewEntry);
+		UE_LOG(LogTemp, Warning, TEXT("ItemID: %s | Name: %s | Stack: %d"),
+			*Entry.Item->ItemID.ToString(),
+			*Entry.Item->ItemName.ToString(),
+			Entry.CurrentStack);
 	}
 }
