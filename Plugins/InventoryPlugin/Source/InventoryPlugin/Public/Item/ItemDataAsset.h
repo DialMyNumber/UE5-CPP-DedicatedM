@@ -10,7 +10,7 @@ UCLASS()
 class INVENTORYPLUGIN_API UItemDataAsset : public UDataAsset
 {
 	GENERATED_BODY()
-	
+
 public:
 	UPROPERTY(EditDefaultsOnly)
 	FName ItemID;
