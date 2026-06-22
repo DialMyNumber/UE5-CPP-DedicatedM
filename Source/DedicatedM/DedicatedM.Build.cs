@@ -1,4 +1,4 @@
-﻿// Copyright Epic Games, Inc. All Rights Reserved.
+﻿// DedicatedM.Build.cs
 
 using UnrealBuildTool;
 
@@ -12,11 +12,14 @@ public class DedicatedM : ModuleRules
 		{ 
 			// Initial Dependencies
 			"Core", "CoreUObject", "Engine", "InputCore", "EnhancedInput",
+
+			// Inventory Plugin
+			"InventoryPlugin",
 		});
 
 		PrivateDependencyModuleNames.AddRange(new string[] 
 		{  
-			"DedicatedM",		// 내 프로젝트 경로
+			// "DedicatedM",		// 내 프로젝트 경로, 헤더파일 경로 탐색용
 		});
 
 		// Uncomment if you are using Slate UI
