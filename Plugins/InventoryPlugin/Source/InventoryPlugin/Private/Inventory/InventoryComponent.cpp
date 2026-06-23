@@ -1,4 +1,4 @@
-﻿// InventoryComponent.cpp
+// InventoryComponent.cpp
 
 #include "Inventory/InventoryComponent.h"
 #include "InventoryLog.h"
@@ -30,17 +30,22 @@ void UInventoryComponent::BeginPlay()
 {
 	Super::BeginPlay();
 
-	if (GetOwner()->GetLocalRole() != ROLE_AutonomousProxy)
-	{
-		return;
-	}
-
 	AActor* Owner = GetOwner();
 
 	if (!Owner)
 	{
 		return;
 	}
+
+	INVEN_NET_LOG(InventoryLog, Warning, Owner, "Begin Play");
+
+	if (GetOwner()->GetLocalRole() != ROLE_AutonomousProxy)
+	{
+		return;
+	}
+
+	//----------------------------------------------
+	// NetRole == ROLE_AutonomousProxy만 실행되는 구간
 
 	INVEN_NET_LOG(InventoryLog, Warning, Owner, "Inventory Component Attached.");
 }
@@ -77,12 +82,14 @@ void UInventoryComponent::Server_AddItem_Implementation(UItemDataAsset* Item, in
 
 void UInventoryComponent::PrintAllItems()
 {
-	if (!GetOwner() || !GetOwner()->HasAuthority())
+	AActor* Owner = GetOwner();
+
+	if (!Owner || !Owner->HasAuthority())
 	{
 		return; // 서버만 출력
 	}
 
-	UE_LOG(LogTemp, Warning, TEXT("=== Inventory Dump ==="));
+	INVEN_NET_LOG(InventoryLog, Warning, Owner, "Try Print All Items");
 
 	for (const FInventoryEntry& Entry : Items)
 	{
@@ -91,7 +98,7 @@ void UInventoryComponent::PrintAllItems()
 			continue;
 		}
 
-		UE_LOG(LogTemp, Warning, TEXT("ItemID: %s | Name: %s | Stack: %d"),
+		INVEN_NET_LOG(InventoryLog, Warning, Owner, "ItemID: %s | Name: %s | Stack: %d", 
 			*Entry.Item->ItemID.ToString(),
 			*Entry.Item->ItemName.ToString(),
 			Entry.CurrentStack);
