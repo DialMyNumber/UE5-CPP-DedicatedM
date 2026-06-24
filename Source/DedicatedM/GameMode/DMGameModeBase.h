@@ -1,4 +1,4 @@
-﻿// DMGameModeBase.h
+// DMGameModeBase.h
 
 #pragma once
 
@@ -13,5 +13,11 @@ class DEDICATEDM_API ADMGameModeBase : public AGameModeBase
 
 public:
 	ADMGameModeBase();
+
+	virtual void PreLogin(
+		const FString& Options, 
+		const FString& Address, 
+		const FUniqueNetIdRepl& UniqueId, 
+		FString& ErrorMessage) override;
 	
 };
